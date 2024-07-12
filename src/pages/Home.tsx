@@ -17,28 +17,37 @@ type HomeVideosState = {
 
 function HomeVideos() {
     const [filter, setFilter] = useState<string>("home")
-    // const [homeVideos, setHomeVideos] = useState<HomeVideosState>({
-    //     videos: [],
-    //     nextPageToken: null,
-    // });
+    const [categoryId, setCategoryId] = useState<null | string>(null)
+
     const [filterVideos, setFilterVideos] = useState<Record<string, HomeVideosState>>({
         home: { videos: [], nextPageToken: null },
-        trending: { videos: [], nextPageToken: null },
         music: { videos: [], nextPageToken: null },
         sport: { videos: [], nextPageToken: null },
         gaming: { videos: [], nextPageToken: null },
-        films: { videos: [], nextPageToken: null },
+        movies: { videos: [], nextPageToken: null },
+        news: { videos: [], nextPageToken: null },
+        fashion: { videos: [], nextPageToken: null },
+        course: { videos: [], nextPageToken: null },
     });
+
+    const [error, setError] = useState<string | null>(null);
 
     const fetchVideos = async () => {
         try {
-            const url =
-                filter === 'home'
-                    ? `${BASE_URL}/videos?part=snippet,contentDetails,statistics&chart=mostPopular&maxResults=20&key=${API_KEY}&${filterVideos[filter].nextPageToken != null ? `pageToken=${filterVideos[filter].nextPageToken}` : ''
-                    }`
-                    : `${BASE_URL}/search?part=snippet,contentDetails,statistics&q=${filter}&maxResults=20&key=${API_KEY}&${filterVideos[filter].nextPageToken != null ? `pageToken=${filterVideos[filter].nextPageToken}` : ''
-                    }`;
+            console.log(filter)
+            console.log(categoryId)
+            console.log(filterVideos[filter].nextPageToken)
+
+            const url = `${BASE_URL}/videos?part=snippet,contentDetails,statistics&chart=mostPopular&maxResults=20&key=${API_KEY}&${categoryId != null ? `videoCategoryId=${categoryId}` : ''}&${filterVideos[filter].nextPageToken != null ? `pageToken=${filterVideos[filter].nextPageToken}` : ''}&${filter == "news" ? "regionCode=in" : ""}`
+
             const response = await axios.get(url);
+            if (response.data.error) {
+                setError('Videos not available for this filter.');
+                return;
+            }
+            setError("")
+            console.log(response);
+
             const mappedVideos = await getAllVideoData(response.data.items);
             setFilterVideos(prev => ({
                 ...prev,
@@ -49,38 +58,51 @@ function HomeVideos() {
             }));
         } catch (error) {
             console.error(`Error fetching ${filter} videos:`, error);
+            setError('Error fetching videos. Please try again later.');
         }
     };
 
     useEffect(() => {
         fetchVideos();
-    }, []);
-    useEffect(() => {
-        console.log(filter);
-    }, [filter]);
+    }, [filter, categoryId]);
+
+    // useEffect(() => {
+    //     console.log(filterVideos);
+    // }, [filterVideos]);
+
+    // useEffect(() => {
+    //     console.log(filter);
+    //     console.log(categoryId);
+    // }, [filter]);
 
     return (
         <div>
             <div className="offcanvas offcanvas-start" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-                <Sidebar setFilter={setFilter} />
+                <Sidebar filter={filter} setFilter={setFilter} setCategoryId={setCategoryId} />
             </div>
-            {filterVideos[filter].videos.length ? (
-                <InfiniteScroll
-                    dataLength={filterVideos[filter].videos.length}
-                    next={fetchVideos}
-                    hasMore={filterVideos[filter].videos.length < 500}
-                    loader={<Spinner />}
-                    height={650}
-                >
-                    <div className="row row-cols-3 w-[95%] mx-auto mt-6">
-                        {filterVideos[filter].videos.length > 0 &&
-                            filterVideos[filter].videos.map((item: HomeVideoType) => (
-                                <Card data={item} key={item.videoId} />
-                            ))}
-                    </div>
-                </InfiniteScroll>
+            {error ? (
+                <div className="text-center mt-6">
+                    <p>{error}</p>
+                </div>
             ) : (
-                <Spinner />
+                filterVideos[filter].videos.length ? (
+                    <InfiniteScroll
+                        dataLength={filterVideos[filter].videos.length}
+                        next={fetchVideos}
+                        hasMore={filterVideos[filter].videos.length < 500}
+                        loader={<Spinner />}
+                        height={650}
+                    >
+                        <div className="row row-cols-3 w-[95%] mx-auto mt-6">
+                            {filterVideos[filter].videos.length > 0 &&
+                                filterVideos[filter].videos.map((item: HomeVideoType) => (
+                                    <Card data={item} key={item.videoId} />
+                                ))}
+                        </div>
+                    </InfiniteScroll>
+                ) : (
+                    <Spinner />
+                )
             )}
         </div>
     );

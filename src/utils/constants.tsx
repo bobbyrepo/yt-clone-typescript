@@ -3,8 +3,15 @@ import {
     MdOutlineSportsVolleyball,
 } from "react-icons/md";
 import { TbMusic, TbDeviceGamepad2 } from "react-icons/tb";
-import { FaRegCompass } from "react-icons/fa";
-import { GiFilmStrip } from "react-icons/gi";
+import { BiMoviePlay } from "react-icons/bi";
+import { FaRegNewspaper } from "react-icons/fa";
+import { TbHanger } from "react-icons/tb";
+import { MdOutlineLightbulb } from "react-icons/md";
+
+
+
+import { fetchCategories } from "./getVideoCategories";
+
 
 export const BASE_URL = "https://youtube.googleapis.com/youtube/v3";
 
@@ -12,35 +19,56 @@ export const mainLinks = [
     {
         icon: <MdHomeFilled className="text-xl" />,
         name: "Home",
-        filter: "home"
-    },
-    {
-        icon: <FaRegCompass className="text-xl" />,
-        name: "Explore",
-        filter: "trending"
+        filterTag: "home",
+        categoryId: null
     },
 ];
+
+const categories = await fetchCategories();
+
 
 export const categoriesLinks = [
     {
         icon: <TbMusic className="text-xl" />,
         name: "Music",
-        filter: "music"
+        filterTag: "music",
+        categoryId: categories.find((item: { snippet: { title: string } }) => item.snippet.title === "Music")?.id
     },
     {
         icon: <MdOutlineSportsVolleyball className="text-xl" />,
         name: "Sport",
-        filter: "sport"
+        filterTag: "sport",
+        categoryId: categories.find((item: { snippet: { title: string } }) => item.snippet.title === "Sports")?.id
     },
     {
         icon: <TbDeviceGamepad2 className="text-xl" />,
         name: "Gaming",
-        filter: "gaming"
+        filterTag: "gaming",
+        categoryId: categories.find((item: { snippet: { title: string } }) => item.snippet.title === "Gaming")?.id
     },
     {
-        icon: <GiFilmStrip className="text-xl" />,
-        name: "Films",
-        filter: "films"
+        icon: <BiMoviePlay className="text-xl" />,
+        name: "Movies",
+        filterTag: "movies",
+        categoryId: categories.find((item: { snippet: { title: string } }) => item.snippet.title === "Movies")?.id
+    },
+    {
+        icon: <FaRegNewspaper className="text-xl" />,
+        name: "News",
+        filterTag: "news",
+        categoryId: categories.find((item: { snippet: { title: string } }) => item.snippet.title === "News & Politics")?.id
+    },
+    {
+        icon: <TbHanger className="text-xl" />,
+        name: "Fashion",
+        filterTag: "fashion",
+        categoryId: categories.find((item: { snippet: { title: string } }) => item.snippet.title === "Howto & Style")?.id
+    },
+    {
+        icon: <MdOutlineLightbulb className="text-xl" />,
+        name: "Course",
+        filterTag: "course",
+        categoryId: categories.find((item: { snippet: { title: string } }) => item.snippet.title === "Education")?.id
     },
 ];
 

@@ -7,20 +7,35 @@ const API_KEY = import.meta.env.VITE_API_KEY
 
 export const getAllVideoData = async (videos: any[]) => {
 
+    // console.log("first", videos)
+
     const channelIds: string[] = [];
+    const videoIds: string[] = [];
 
 
     videos.forEach(
-        (item: { snippet: { channelId: string } }) => {
+        (item: { snippet: { channelId: string }; id: { videoId: string } }) => {
             channelIds.push(item.snippet.channelId);
+            videoIds.push(item.id.videoId);
         }
     );
 
+
+    // console.log(videoIds)
     const {
         data: { items: channelsData },
     } = await axios.get(
         `${BASE_URL}/channels?part=snippet,contentDetails&id=${channelIds.join(",")}&key=${API_KEY}`
     );
+
+
+    const {
+        data
+    } = await axios.get(
+        `${BASE_URL}/videos?part=contentDetails,statistics&id=${videoIds.join(",")}&key=${API_KEY}`
+    );
+
+    // console.log(data)
 
     const allData: HomeVideoType[] = [];
     videos.forEach((video) => {

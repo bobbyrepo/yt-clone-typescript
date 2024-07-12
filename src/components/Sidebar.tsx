@@ -4,14 +4,20 @@ import { BsYoutube } from "react-icons/bs";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { mainLinks, categoriesLinks, textLinks } from "../utils/constants";
 
-export default function Sidebar({ setFilter }: { setFilter: (filter: string) => void }) {
+export default function Sidebar({ filter, setFilter, setCategoryId }:
+  {
+    filter: string;
+    setFilter: (filter: string) => void;
+    setCategoryId: (filter: string | null) => void
+  }) {
 
-  const toggleFilter = (filter: string) => {
-    setFilter(filter)
+  const toggleFilter = (filter: string, categoryId: string | null) => {
+    setFilter(filter);
+    setCategoryId(categoryId)
   }
 
   return (
-    <div className="w-full h-full text-white bg-[#0c0c0c] overflow-auto pb-8 sidebar">
+    <div data-bs-dismiss="offcanvas" className="w-full h-full text-white bg-[#0c0c0c] overflow-auto pb-8 sidebar">
       <div className="flex gap-8 items-center text-2xl w-[80%] mx-auto h-14">
         <a className="" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
           <RxHamburgerMenu className='text-xl' />
@@ -24,13 +30,12 @@ export default function Sidebar({ setFilter }: { setFilter: (filter: string) => 
         </Link>
       </div>
       <ul className="flex flex-col border-b-[1px] border-zinc-700">
-        {mainLinks.map(({ icon, name, filter }) => {
+        {mainLinks.map(({ icon, name, filterTag, categoryId }) => {
           return (
             <li
               key={name}
-              className={`pl-6 py-3 hover:bg-neutral-800 ${name === "Home" ? "bg-neutral-800" : ""
-                }`}
-              onClick={() => toggleFilter(filter)}
+              className={`pl-6 py-3 hover:bg-neutral-800 ${filter === filterTag ? "bg-neutral-800" : ""}`}
+              onClick={() => toggleFilter(filterTag, categoryId)}
             >
               <h1 className="flex items-center gap-5">
                 {icon}
@@ -41,10 +46,11 @@ export default function Sidebar({ setFilter }: { setFilter: (filter: string) => 
         })}
       </ul>
       <ul className="flex flex-col border-b-[1px] border-zinc-700">
-        {categoriesLinks.map(({ icon, name, filter }) => {
+        {categoriesLinks.map(({ icon, name, filterTag, categoryId }) => {
           return (
-            <li key={name} className={`pl-6 py-3 hover:bg-zinc-600 `}
-              onClick={() => toggleFilter(filter)}
+            <li key={name}
+              className={`pl-6 py-3 hover:bg-neutral-800 ${filter === filterTag ? "bg-neutral-800" : ""}`}
+              onClick={() => { toggleFilter(filterTag, categoryId) }}
             >
               <h1 className="flex items-center gap-5">
                 {icon}
@@ -69,6 +75,6 @@ export default function Sidebar({ setFilter }: { setFilter: (filter: string) => 
       <p className="px-4 pt-3 text-sm text-zinc-400">
         This clone is for educational purpose only.
       </p>
-    </div>
+    </div >
   );
 }
