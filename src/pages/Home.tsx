@@ -34,11 +34,11 @@ function HomeVideos() {
 
     const fetchVideos = async () => {
         try {
-            console.log(filter)
-            console.log(categoryId)
-            console.log(filterVideos[filter].nextPageToken)
+            // console.log(filter)
+            // console.log(categoryId)
+            // console.log(filterVideos[filter].nextPageToken)
 
-            const url = `${BASE_URL}/videos?part=snippet,contentDetails,statistics&chart=mostPopular&maxResults=20&key=${API_KEY}&${categoryId != null ? `videoCategoryId=${categoryId}` : ''}&${filterVideos[filter].nextPageToken != null ? `pageToken=${filterVideos[filter].nextPageToken}` : ''}&${filter == "news" ? "regionCode=in" : ""}`
+            const url = `${BASE_URL}/videos?part=snippet&chart=mostPopular&maxResults=20&key=${API_KEY}&${categoryId != null ? `videoCategoryId=${categoryId}` : ''}&${filterVideos[filter].nextPageToken != null ? `pageToken=${filterVideos[filter].nextPageToken}` : ''}&${filter == "news" ? "regionCode=in" : ""}`
 
             const response = await axios.get(url);
             if (response.data.error) {
@@ -46,7 +46,7 @@ function HomeVideos() {
                 return;
             }
             setError("")
-            console.log(response);
+            // console.log(response);
 
             const mappedVideos = await getAllVideoData(response.data.items);
             setFilterVideos(prev => ({
@@ -64,7 +64,7 @@ function HomeVideos() {
 
     useEffect(() => {
         fetchVideos();
-    }, [filter, categoryId]);
+    }, [filter]);
 
     // useEffect(() => {
     //     console.log(filterVideos);
@@ -91,7 +91,7 @@ function HomeVideos() {
                         next={fetchVideos}
                         hasMore={filterVideos[filter].videos.length < 500}
                         loader={<Spinner />}
-                        height={650}
+                        height={680}
                     >
                         <div className="row row-cols-3 w-[95%] mx-auto mt-6">
                             {filterVideos[filter].videos.length > 0 &&

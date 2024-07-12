@@ -7,55 +7,55 @@ const API_KEY = import.meta.env.VITE_API_KEY
 
 export const getAllVideoData = async (videos: any[]) => {
 
-    // console.log("first", videos)
-
     const channelIds: string[] = [];
     const videoIds: string[] = [];
 
 
     videos.forEach(
-        (item: { snippet: { channelId: string }; id: { videoId: string } }) => {
+        (item: { snippet: { channelId: string }; id: string }) => {
             channelIds.push(item.snippet.channelId);
-            videoIds.push(item.id.videoId);
+            videoIds.push(item.id);
         }
     );
 
 
-    // console.log(videoIds)
     const {
         data: { items: channelsData },
     } = await axios.get(
         `${BASE_URL}/channels?part=snippet,contentDetails&id=${channelIds.join(",")}&key=${API_KEY}`
     );
 
-
     const {
-        data
+        data: { items: videosData },
     } = await axios.get(
-        `${BASE_URL}/videos?part=contentDetails,statistics&id=${videoIds.join(",")}&key=${API_KEY}`
+        `${BASE_URL}/videos?part=snippet,contentDetails,statistics&id=${videoIds.join(",")}&key=${API_KEY}`
     );
 
-    // console.log(data)
 
     const allData: HomeVideoType[] = [];
     videos.forEach((video) => {
-        const aa = channelsData.find(
+        const channelData = channelsData.find(
             (channel: { id: string }) => channel.id === video.snippet.channelId
         );
+        const VideoData = videosData.find(
+            (vid: { id: string }) => vid.id === video.id
+        );
+
+        // console.log(video.id, VideoData)
 
         allData.push({
-            videoId: video?.id,
-            videoTitle: video?.snippet?.title,
-            videoDescription: video?.snippet?.description,
-            videoLink: `https://www.youtube.com/watch?v=${video?.id}`,
-            videoThumbnail: video?.snippet?.thumbnails?.standard?.url,
-            videoDuration: getDuration(video?.contentDetails?.duration),
-            videoViews: video?.statistics?.viewCount,
-            videoAge: new Date(video?.snippet?.publishedAt).toDateString(),
+            videoId: VideoData?.id,
+            videoTitle: VideoData?.snippet?.title,
+            videoDescription: VideoData?.snippet?.description,
+            videoLink: `https://www.youtube.com/watch?v=${VideoData?.id}`,
+            videoThumbnail: VideoData?.snippet?.thumbnails?.standard?.url,
+            videoDuration: getDuration(VideoData?.contentDetails?.duration),
+            videoViews: VideoData?.statistics?.viewCount,
+            videoAge: new Date(VideoData?.snippet?.publishedAt).toDateString(),
             channelInfo: {
-                id: video?.snippet?.channelId,
-                image: aa?.snippet?.thumbnails?.default?.url,
-                name: video?.snippet?.channelTitle,
+                id: VideoData?.snippet?.channelId,
+                image: channelData?.snippet?.thumbnails?.default?.url,
+                name: VideoData?.snippet?.channelTitle,
             }
         })
     });
