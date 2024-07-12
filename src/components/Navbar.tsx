@@ -12,7 +12,7 @@ function Navbar() {
     const [search, setSearch] = useState("")
 
     return (
-        <div className="w-full bg-[#0c0c0c] opacity-95 sticky top-0 z-50">
+        <div className="w-full bg-[#0c0c0c] opacity-[98%] sticky top-0 z-50">
             <div className="flex justify-between items-center w-[95%] mx-auto h-14 ">
                 <div className="flex gap-8 items-center text-2xl">
                     <a className="" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
@@ -60,11 +60,6 @@ function Navbar() {
                 <div className="">
                     {/* empty */}
                 </div>
-            </div>
-
-
-            <div className="offcanvas offcanvas-start" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-                <Sidebar />
             </div>
         </div>
     )
