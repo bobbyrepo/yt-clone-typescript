@@ -10,7 +10,7 @@ function MiniCardComponent({ data }: { data: RecommendedVideoType }) {
         >
             <div className="flex gap-3">
                 <div className="relative min-w-fit">
-                    <span className="absolute bottom-3 right-3 text-sm bg-gray-900 px-2 py-0.5 z-10">
+                    <span className="absolute bottom-1 right-1 text-sm bg-[#0c0c0cd0] px-2 py-0.5 z-10 rounded">
                         {data.videoDuration}
                     </span>
                     <img

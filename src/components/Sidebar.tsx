@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   MdHomeFilled,
   MdOutlineSportsVolleyball,
@@ -21,6 +22,7 @@ export default function Sidebar({ filter, setFilter, setCategoryId }:
     setCategoryId: (filter: string | null) => void
   }) {
 
+  const navigate = useNavigate()
   const [categories, setCategories] = useState<any[]>([])
 
   const fetchAndSetCategories = async () => {
@@ -82,6 +84,7 @@ export default function Sidebar({ filter, setFilter, setCategoryId }:
   const toggleFilter = (filter: string, categoryId: string | null) => {
     setFilter(filter);
     setCategoryId(categoryId)
+    navigate("/")
   }
 
   return (

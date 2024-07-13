@@ -15,9 +15,7 @@ type HomeVideosState = {
     nextPageToken: null | string;
 };
 
-function HomeVideos() {
-    const [filter, setFilter] = useState<string>("home")
-    const [categoryId, setCategoryId] = useState<null | string>(null)
+function HomeVideos({ filter, categoryId }: { filter: string, categoryId: string | null }) {
 
     const [filterVideos, setFilterVideos] = useState<Record<string, HomeVideosState>>({
         home: { videos: [], nextPageToken: null },
@@ -77,9 +75,6 @@ function HomeVideos() {
 
     return (
         <div>
-            <div className="offcanvas offcanvas-start" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-                <Sidebar filter={filter} setFilter={setFilter} setCategoryId={setCategoryId} />
-            </div>
             {error ? (
                 <div className="text-center mt-6">
                     <p>{error}</p>

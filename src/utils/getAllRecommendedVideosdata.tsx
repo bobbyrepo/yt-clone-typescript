@@ -39,7 +39,7 @@ export const getAllRecommendedVideosdata = async (videos: any[], videoId?: strin
                 videoTitle: video.snippet.title,
                 videoLink: `https://www.youtube.com/watch?v=${video?.id}`,
                 videoThumbnail: video.snippet.thumbnails.medium.url,
-                videoDuration: video.contentDetails.duration,
+                videoDuration: getDuration(video.contentDetails.duration),
                 videoViews: video.statistics.viewCount,
                 videoAge: new Date(video.snippet.publishedAt).toDateString(),
                 channelInfo: {
