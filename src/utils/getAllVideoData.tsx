@@ -22,8 +22,10 @@ export const getAllVideoData = async (videos: any[]) => {
     const {
         data: { items: channelsData },
     } = await axios.get(
-        `${BASE_URL}/channels?part=snippet,contentDetails&id=${channelIds.join(",")}&key=${API_KEY}`
+        `${BASE_URL}/channels?part=snippet,contentDetails,statistics&id=${channelIds.join(",")}&key=${API_KEY}`
     );
+
+    // console.log(channelsData)
 
     const {
         data: { items: videosData },
@@ -31,6 +33,7 @@ export const getAllVideoData = async (videos: any[]) => {
         `${BASE_URL}/videos?part=snippet,contentDetails,statistics&id=${videoIds.join(",")}&key=${API_KEY}`
     );
 
+    console.log(videosData)
 
     const allData: HomeVideoType[] = [];
     videos.forEach((video) => {
@@ -51,11 +54,13 @@ export const getAllVideoData = async (videos: any[]) => {
             videoThumbnail: VideoData?.snippet?.thumbnails?.standard?.url,
             videoDuration: getDuration(VideoData?.contentDetails?.duration),
             videoViews: VideoData?.statistics?.viewCount,
+            videoLikes: VideoData?.statistics?.likeCount,
             videoAge: new Date(VideoData?.snippet?.publishedAt).toDateString(),
             channelInfo: {
                 id: VideoData?.snippet?.channelId,
                 image: channelData?.snippet?.thumbnails?.default?.url,
                 name: VideoData?.snippet?.channelTitle,
+                subCount: channelData?.statistics?.subscriberCount,
             }
         })
     });

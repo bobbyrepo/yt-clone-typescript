@@ -7,7 +7,7 @@ const API_KEY = import.meta.env.VITE_API_KEY
 
 export const getAllRecommendedVideosdata = async (videos: any[], videoId?: string) => {
 
-    console.log("first", videos)
+    // console.log("first", videos)
 
     const videoIds: string[] = [];
 
@@ -19,7 +19,7 @@ export const getAllRecommendedVideosdata = async (videos: any[], videoId?: strin
     );
 
 
-    console.log(videoIds)
+    // console.log(videoIds)
 
     const {
         data: { items: videosData },
@@ -28,7 +28,7 @@ export const getAllRecommendedVideosdata = async (videos: any[], videoId?: strin
     );
 
 
-    console.log(videosData)
+    // console.log(videosData)
 
 
     const allData: RecommendedVideoType[] = [];
@@ -50,7 +50,7 @@ export const getAllRecommendedVideosdata = async (videos: any[], videoId?: strin
         }
     });
 
-    console.log(allData)
+    // console.log(allData)
 
     return allData
 };

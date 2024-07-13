@@ -7,11 +7,13 @@ export interface HomeVideoType {
     videoThumbnail: string;
     videoDuration: string;
     videoViews: string;
+    videoLikes: string;
     videoAge: string;
     channelInfo: {
         id: string;
         image: string;
         name: string;
+        subCount: string
     };
 }
 export interface RecommendedVideoType {
