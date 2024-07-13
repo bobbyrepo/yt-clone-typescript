@@ -1,22 +1,26 @@
 import { BASE_URL } from "./constants";
-import axios from "axios";
-import { HomeVideoType } from "./Types";
+import axios, { all } from "axios";
+import { HomeVideoType, RecommendedVideoType } from "./Types";
 import { getDuration } from "./getDuration";
 
 const API_KEY = import.meta.env.VITE_API_KEY
 
-export const getAllVideoData = async (videos: any[]) => {
+export const getAllSearchVideosData = async (videos: any[]) => {
+
 
     const channelIds: string[] = [];
     const videoIds: string[] = [];
 
 
     videos.forEach(
-        (item: { snippet: { channelId: string }; id: string }) => {
+        (item: { snippet: { channelId: string }; id: { videoId: string } }) => {
             channelIds.push(item.snippet.channelId);
-            videoIds.push(item.id);
+            videoIds.push(item.id.videoId);
         }
     );
+
+    // console.log(channelIds)
+    // console.log(videoIds)
 
 
     const {
@@ -35,13 +39,17 @@ export const getAllVideoData = async (videos: any[]) => {
 
     // console.log(videosData)
 
+    // videosData.forEach(element => {
+    //     console.log("Duration", element.contentDetails.duration)
+    // });
+
     const allData: HomeVideoType[] = [];
     videos.forEach((video) => {
         const channelData = channelsData.find(
             (channel: { id: string }) => channel.id === video.snippet.channelId
         );
         const VideoData = videosData.find(
-            (vid: { id: string }) => vid.id === video.id
+            (vid: { id: string }) => vid.id === video.id.videoId
         );
 
         // console.log(video.id, VideoData)
@@ -52,7 +60,7 @@ export const getAllVideoData = async (videos: any[]) => {
             videoDescription: VideoData?.snippet?.description,
             videoLink: `https://www.youtube.com/watch?v=${VideoData?.id}`,
             videoThumbnail: VideoData?.snippet?.thumbnails?.standard?.url,
-            videoDuration: getDuration(VideoData?.contentDetails?.duration),
+            videoDuration: VideoData?.contentDetails?.duration,
             videoViews: VideoData?.statistics?.viewCount,
             videoLikes: VideoData?.statistics?.likeCount,
             videoAge: new Date(VideoData?.snippet?.publishedAt).toDateString(),
@@ -64,5 +72,6 @@ export const getAllVideoData = async (videos: any[]) => {
             }
         })
     });
+    console.log(allData)
     return allData
 };

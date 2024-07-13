@@ -1,10 +1,6 @@
-import React from 'react'
 import { HomeVideoType } from '../utils/Types'
-import { BiLike, BiDislike } from "react-icons/bi";
-import { HiScissors } from "react-icons/hi";
-import { MdOutlinePlaylistAdd } from "react-icons/md";
+import { BiLike } from "react-icons/bi";
 import { FaShare } from "react-icons/fa";
-import { BsThreeDots } from "react-icons/bs";
 
 function WatchDetails({ videoDetails }: { videoDetails?: HomeVideoType }) {
     return (
@@ -44,69 +40,6 @@ function WatchDetails({ videoDetails }: { videoDetails?: HomeVideoType }) {
                 <p className='whitespace-pre-line'>{videoDetails?.videoDescription}</p>
             </div>
 
-            {/* <div className="flex justify-between mt-1">
-                <div className="text-sm text-gray-400">
-                    <span className="after:content-['•'] after:mx-1">
-                        {videoDetails?.videoViews} views
-                    </span>
-                    <span> {videoDetails?.videoAge} ago</span>
-                </div>
-                <div className="flex items-center gap-4 uppercase">
-                    <div className="flex items-center gap-1 cursor-pointer">
-                        <BiLike className="text-xl" />
-                        <strong>{videoDetails?.videoLikes}</strong>
-                    </div>
-                    <div className="flex items-center gap-1 cursor-pointer">
-                        <FaShare className="text-xl" />
-                        <strong>share</strong>
-                    </div>
-                </div>
-            </div>
-            <div className="flex gap-4 flex-col border-solid border-gray-400 border-2 my-5 pb-3 border-l-transparent border-r-transparent">
-                <div className="flex items-center gap-5 mr-5 mt-4">
-                    <div>
-                        <img
-                            src={videoDetails?.channelInfo?.image}
-                            alt=""
-                            className="rounded-full h-12 w-12"
-                        />
-                    </div>
-                    <div className="w-5/6">
-                        <h5 className="text-sm">
-                            <strong>{videoDetails?.channelInfo?.name}</strong>
-                        </h5>
-                        <h6 className="text-gray-400 text-xs">
-                            {videoDetails?.channelInfo?.subCount} subscribers
-                        </h6>
-                    </div>
-                    <div>
-                        <button className="uppercase bg-red-600 rounded-sm p-2 text-sm tracking-wider">
-                            subscribe
-                        </button>
-                    </div>
-                </div>
-            <div
-                    className={`${!showMoreStatus ? "max-h-16 overflow-hidden" : ""
-                        } text-sm w-11/12`}
-                >
-                    <pre
-                        style={{
-                            fontFamily: `"Roboto", sans-serif`,
-                        }}
-                        className="whitespace-pre-wrap"
-                    >
-                        {videoDetails.videoDescription}
-                    </pre>
-                </div> 
-                <div>
-                    <button
-                        className="uppercase text-sm cursor-pointer"
-                        onClick={() => setShowMoreStatus(!showMoreStatus)}
-                    >
-                        Show {showMoreStatus ? "less" : "more"}
-                    </button>
-                </div> 
-            </div> */}
         </div>)
 }
 

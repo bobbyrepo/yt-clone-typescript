@@ -7,15 +7,28 @@ import { BASE_URL } from '../utils/constants';
 import { HomeVideoType } from '../utils/Types';
 import { getAllVideoData } from '../utils/getAllVideoData';
 import Sidebar from '../components/Sidebar';
+import { getAllSearchVideosData } from '../utils/getAllSearchVideosData';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-type HomeVideosState = {
-    videos: HomeVideoType[];
-    nextPageToken: null | string;
+interface HomePageProps {
+    filter: string;
+    categoryId: string | null;
+    searchlist: SearchListState
+}
+
+interface SearchListState {
+    videos: HomeVideoType[],
+    nextPageToken: null | string
 };
 
-function HomeVideos({ filter, categoryId }: { filter: string, categoryId: string | null }) {
+
+interface HomeVideosState {
+    videos: HomeVideoType[],
+    nextPageToken: null | string
+};
+
+function HomeVideos({ filter, categoryId, searchlist }: HomePageProps) {
 
     const [filterVideos, setFilterVideos] = useState<Record<string, HomeVideosState>>({
         home: { videos: [], nextPageToken: null },
@@ -32,10 +45,6 @@ function HomeVideos({ filter, categoryId }: { filter: string, categoryId: string
 
     const fetchVideos = async () => {
         try {
-            // console.log(filter)
-            // console.log(categoryId)
-            // console.log(filterVideos[filter].nextPageToken)
-
             const url = `${BASE_URL}/videos?part=snippet&chart=mostPopular&maxResults=20&key=${API_KEY}&${categoryId != null ? `videoCategoryId=${categoryId}` : ''}&${filterVideos[filter].nextPageToken != null ? `pageToken=${filterVideos[filter].nextPageToken}` : ''}&${filter == "news" ? "regionCode=in" : ""}`
 
             const response = await axios.get(url);
@@ -44,7 +53,7 @@ function HomeVideos({ filter, categoryId }: { filter: string, categoryId: string
                 return;
             }
             setError("")
-            // console.log(response);
+            console.log("Home Video", response.data.items[0]);
 
             const mappedVideos = await getAllVideoData(response.data.items);
             setFilterVideos(prev => ({
@@ -64,14 +73,6 @@ function HomeVideos({ filter, categoryId }: { filter: string, categoryId: string
         fetchVideos();
     }, [filter]);
 
-    // useEffect(() => {
-    //     console.log(filterVideos);
-    // }, [filterVideos]);
-
-    // useEffect(() => {
-    //     console.log(filter);
-    //     console.log(categoryId);
-    // }, [filter]);
 
     return (
         <div>
@@ -80,24 +81,44 @@ function HomeVideos({ filter, categoryId }: { filter: string, categoryId: string
                     <p>{error}</p>
                 </div>
             ) : (
-                filterVideos[filter].videos.length ? (
-                    <InfiniteScroll
-                        dataLength={filterVideos[filter].videos.length}
-                        next={fetchVideos}
-                        hasMore={filterVideos[filter].videos.length < 500}
-                        loader={<Spinner />}
-                        height={680}
-                    >
-                        <div className="row row-cols-3 w-[95%] mx-auto mt-6">
-                            {filterVideos[filter].videos.length > 0 &&
-                                filterVideos[filter].videos.map((item: HomeVideoType) => (
-                                    <Card data={item} key={item.videoId} />
-                                ))}
-                        </div>
-                    </InfiniteScroll>
-                ) : (
-                    <Spinner />
-                )
+                <div>
+                    {!searchlist.videos.length ? (
+                        filterVideos[filter].videos.length ? (
+                            <InfiniteScroll
+                                dataLength={filterVideos[filter].videos.length}
+                                next={fetchVideos}
+                                hasMore={filterVideos[filter].videos.length < 500}
+                                loader={<Spinner />}
+                                height={680}
+                            >
+                                <div className="row row-cols-3 w-[95%] mx-auto mt-6">
+                                    {filterVideos[filter].videos.length > 0 &&
+                                        filterVideos[filter].videos.map((item: HomeVideoType) => (
+                                            <Card data={item} key={item.videoId} />
+                                        ))}
+                                </div>
+                            </InfiniteScroll>
+                        ) : (
+                            <Spinner />
+                        )
+                    ) : (
+                        searchlist.videos.length ? (
+                            <InfiniteScroll
+                                dataLength={searchlist.videos.length}
+                                // next={fetchSearch}
+                                hasMore={searchlist.videos.length < 500}
+                                loader={<Spinner />}
+                                height={680}
+                            >
+                                <div className="row row-cols-3 w-[95%] mx-auto mt-6">
+                                    {searchlist.videos.length > 0 &&
+                                        searchlist.videos.map((item: HomeVideoType) => <Card data={item} key={item.videoId} />)}
+                                </div>
+                            </InfiniteScroll>
+                        ) : (<Spinner />)
+                    )
+                    }
+                </div>
             )}
         </div>
     );

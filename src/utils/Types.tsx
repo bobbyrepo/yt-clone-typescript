@@ -5,7 +5,7 @@ export interface HomeVideoType {
     videoDescription: string;
     videoLink: string;
     videoThumbnail: string;
-    videoDuration: string;
+    videoDuration?: string;
     videoViews: string;
     videoLikes: string;
     videoAge: string;
@@ -21,7 +21,7 @@ export interface RecommendedVideoType {
     videoTitle: string;
     videoLink: string;
     videoThumbnail: string;
-    videoDuration: string;
+    videoDuration?: string;
     videoViews: string;
     videoAge: string;
     channelInfo: {
