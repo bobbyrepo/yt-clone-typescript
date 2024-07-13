@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { BsYoutube } from "react-icons/bs";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { mainLinks, categoriesLinks, textLinks } from "../utils/constants";
+import { mainLinks, getCategoriesLinks, textLinks } from "../utils/constants";
 
 export default function Sidebar({ filter, setFilter, setCategoryId }:
   {
@@ -10,6 +10,9 @@ export default function Sidebar({ filter, setFilter, setCategoryId }:
     setFilter: (filter: string) => void;
     setCategoryId: (filter: string | null) => void
   }) {
+
+  const categoriesLinks = getCategoriesLinks();
+
 
   const toggleFilter = (filter: string, categoryId: string | null) => {
     setFilter(filter);
