@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import {
+  MdHomeFilled,
+  MdOutlineSportsVolleyball,
+} from "react-icons/md";
+import { TbMusic, TbDeviceGamepad2 } from "react-icons/tb";
+import { BiMoviePlay } from "react-icons/bi";
+import { FaRegNewspaper } from "react-icons/fa";
+import { TbHanger } from "react-icons/tb";
+import { MdOutlineLightbulb } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { BsYoutube } from "react-icons/bs";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { mainLinks, getCategoriesLinks, textLinks } from "../utils/constants";
+import { mainLinks, textLinks } from "../utils/constants";
+import { fetchCategories } from "../utils/getVideoCategories";
 
 export default function Sidebar({ filter, setFilter, setCategoryId }:
   {
@@ -11,7 +21,62 @@ export default function Sidebar({ filter, setFilter, setCategoryId }:
     setCategoryId: (filter: string | null) => void
   }) {
 
-  const categoriesLinks = getCategoriesLinks();
+  const [categories, setCategories] = useState<any[]>([])
+
+  const fetchAndSetCategories = async () => {
+    const res = await fetchCategories();
+    setCategories(res)
+  };
+
+  useEffect(() => {
+    fetchAndSetCategories();
+  }, []);
+
+
+  let categoriesLinks = [
+    {
+      icon: <TbMusic className="text-xl" />,
+      name: "Music",
+      filterTag: "music",
+      categoryId: categories.find((item: { snippet: { title: string } }) => item.snippet.title === "Music")?.id
+    },
+    {
+      icon: <MdOutlineSportsVolleyball className="text-xl" />,
+      name: "Sport",
+      filterTag: "sport",
+      categoryId: categories.find((item: { snippet: { title: string } }) => item.snippet.title === "Sports")?.id
+    },
+    {
+      icon: <TbDeviceGamepad2 className="text-xl" />,
+      name: "Gaming",
+      filterTag: "gaming",
+      categoryId: categories.find((item: { snippet: { title: string } }) => item.snippet.title === "Gaming")?.id
+    },
+    {
+      icon: <BiMoviePlay className="text-xl" />,
+      name: "Movies",
+      filterTag: "movies",
+      categoryId: categories.find((item: { snippet: { title: string } }) => item.snippet.title === "Movies")?.id
+    },
+    {
+      icon: <FaRegNewspaper className="text-xl" />,
+      name: "News",
+      filterTag: "news",
+      categoryId: categories.find((item: { snippet: { title: string } }) => item.snippet.title === "News & Politics")?.id
+    },
+    {
+      icon: <TbHanger className="text-xl" />,
+      name: "Fashion",
+      filterTag: "fashion",
+      categoryId: categories.find((item: { snippet: { title: string } }) => item.snippet.title === "Howto & Style")?.id
+    },
+    {
+      icon: <MdOutlineLightbulb className="text-xl" />,
+      name: "Course",
+      filterTag: "course",
+      categoryId: categories.find((item: { snippet: { title: string } }) => item.snippet.title === "Education")?.id
+    },
+  ];
 
 
   const toggleFilter = (filter: string, categoryId: string | null) => {
