@@ -1,11 +1,23 @@
+import { useEffect } from 'react'
 import './App.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
 import Home from './pages/Home'
 import Watch from './pages/Watch'
+import { fetchCategories } from './utils/getVideoCategories'
+import { updateCategoriesLinks } from './utils/constants';
 
 function App() {
+
+  const fetchAndSetCategories = async () => {
+    const categories = await fetchCategories();
+    updateCategoriesLinks(categories);
+  };
+
+  useEffect(() => {
+    fetchAndSetCategories();
+  }, []);
 
   return (
     <div className="">
