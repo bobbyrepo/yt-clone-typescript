@@ -11,24 +11,17 @@ import { getAllSearchVideosData } from '../utils/getAllSearchVideosData';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-interface HomePageProps {
+interface HomeProps {
     filter: string;
     categoryId: string | null;
-    searchlist: SearchListState
 }
-
-interface SearchListState {
-    videos: HomeVideoType[],
-    nextPageToken: null | string
-};
-
 
 interface HomeVideosState {
     videos: HomeVideoType[],
     nextPageToken: null | string
 };
 
-function HomeVideos({ filter, categoryId, searchlist }: HomePageProps) {
+function HomeVideos({ filter, categoryId }: HomeProps) {
 
     const [filterVideos, setFilterVideos] = useState<Record<string, HomeVideosState>>({
         home: { videos: [], nextPageToken: null },
@@ -53,7 +46,7 @@ function HomeVideos({ filter, categoryId, searchlist }: HomePageProps) {
                 return;
             }
             setError("")
-            console.log("Home Video", response.data.items[0]);
+            // console.log("Home Video", response.data.items[0]);
 
             const mappedVideos = await getAllVideoData(response.data.items);
             setFilterVideos(prev => ({
@@ -81,46 +74,28 @@ function HomeVideos({ filter, categoryId, searchlist }: HomePageProps) {
                     <p>{error}</p>
                 </div>
             ) : (
-                <div>
-                    {!searchlist.videos.length ? (
-                        filterVideos[filter].videos.length ? (
-                            <InfiniteScroll
-                                dataLength={filterVideos[filter].videos.length}
-                                next={fetchVideos}
-                                hasMore={filterVideos[filter].videos.length < 500}
-                                loader={<Spinner />}
-                                height={680}
-                            >
-                                <div className="row row-cols-3 w-[95%] mx-auto mt-6">
-                                    {filterVideos[filter].videos.length > 0 &&
-                                        filterVideos[filter].videos.map((item: HomeVideoType) => (
-                                            <Card data={item} key={item.videoId} />
-                                        ))}
-                                </div>
-                            </InfiniteScroll>
-                        ) : (
-                            <Spinner />
-                        )
-                    ) : (
-                        searchlist.videos.length ? (
-                            <InfiniteScroll
-                                dataLength={searchlist.videos.length}
-                                // next={fetchSearch}
-                                hasMore={searchlist.videos.length < 500}
-                                loader={<Spinner />}
-                                height={680}
-                            >
-                                <div className="row row-cols-3 w-[95%] mx-auto mt-6">
-                                    {searchlist.videos.length > 0 &&
-                                        searchlist.videos.map((item: HomeVideoType) => <Card data={item} key={item.videoId} />)}
-                                </div>
-                            </InfiniteScroll>
-                        ) : (<Spinner />)
-                    )
-                    }
-                </div>
-            )}
-        </div>
+                filterVideos[filter].videos.length ? (
+                    <InfiniteScroll
+                        dataLength={filterVideos[filter].videos.length}
+                        next={fetchVideos}
+                        hasMore={filterVideos[filter].videos.length < 500}
+                        loader={<Spinner />}
+                        height={680}
+                    >
+                        <div className="row row-cols-3 w-[95%] mx-auto mt-6">
+                            {filterVideos[filter].videos.length > 0 &&
+                                filterVideos[filter].videos.map((item: HomeVideoType) => (
+                                    <Card data={item} key={item.videoId} />
+                                ))}
+                        </div>
+                    </InfiniteScroll>
+                ) : (
+                    <Spinner />
+                )
+
+            )
+            }
+        </div >
     );
 }
 

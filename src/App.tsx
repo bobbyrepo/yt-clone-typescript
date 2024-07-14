@@ -3,25 +3,20 @@ import './App.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
+import Search from './pages/Search'
 import Watch from './pages/Watch'
 import Sidebar from './components/Sidebar'
-import { HomeVideoType } from './utils/Types'
+import { useSearchList } from './Hooks/useSearchList'
 
-interface SearchListState {
-  videos: HomeVideoType[],
-  nextPageToken: null | string
-};
+
 
 function App() {
   const [filter, setFilter] = useState<string>("home")
   const [categoryId, setCategoryId] = useState<null | string>(null)
-  const [searchlist, setSearchList] = useState<SearchListState>({
-    videos: [], nextPageToken: null
-  });
 
-  useEffect(() => {
-    console.log("searchlist", searchlist)
-  }, [searchlist])
+  const [search, setSearch] = useState('');
+
+  const { searchList, fetchSearch, setSearchList } = useSearchList();
 
   return (
     <div className="">
@@ -32,22 +27,24 @@ function App() {
             setFilter={setFilter}
             setCategoryId={setCategoryId} />
         </div>
-        <Navbar searchlist={searchlist} setSearchList={setSearchList} />
+        <Navbar
+          search={search}
+          setSearch={setSearch}
+          fetchSearch={fetchSearch}
+          setSearchList={setSearchList} />
+
         <Routes>
           <Route path="/" element={
             <Home
               filter={filter}
-              categoryId={categoryId}
-              searchlist={searchlist}
-            />}
+              categoryId={categoryId} />}
           />
-          {/* <Route path="/movies" element={<Movies />} /> */}
+          <Route path="/search" element={<Search setSearch={setSearch} />} />
           <Route path="/watch/:channelId/:videoId" element={<Watch />} />
-          {/* <Route path="*" element={<Navigate to="/" />} /> */}
         </Routes>
       </BrowserRouter>
     </div>
   )
 }
 
-export default App
+export default App;

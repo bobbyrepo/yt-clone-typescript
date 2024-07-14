@@ -44,6 +44,8 @@ export const getAllSearchVideosData = async (videos: any[]) => {
     // });
 
     const allData: HomeVideoType[] = [];
+    const videoIdsSet = new Set<string>();  // Set to store unique video IDs
+
     videos.forEach((video) => {
         const channelData = channelsData.find(
             (channel: { id: string }) => channel.id === video.snippet.channelId
@@ -52,26 +54,28 @@ export const getAllSearchVideosData = async (videos: any[]) => {
             (vid: { id: string }) => vid.id === video.id.videoId
         );
 
-        // console.log(video.id, VideoData)
+        // Check if the video ID exists and if it has already been added
+        if (VideoData?.id && !videoIdsSet.has(VideoData.id)) {
+            videoIdsSet.add(VideoData.id);  // Add the video ID to the set
 
-        allData.push({
-            videoId: VideoData?.id,
-            videoTitle: VideoData?.snippet?.title,
-            videoDescription: VideoData?.snippet?.description,
-            videoLink: `https://www.youtube.com/watch?v=${VideoData?.id}`,
-            videoThumbnail: VideoData?.snippet?.thumbnails?.standard?.url,
-            videoDuration: VideoData?.contentDetails?.duration,
-            videoViews: VideoData?.statistics?.viewCount,
-            videoLikes: VideoData?.statistics?.likeCount,
-            videoAge: new Date(VideoData?.snippet?.publishedAt).toDateString(),
-            channelInfo: {
-                id: VideoData?.snippet?.channelId,
-                image: channelData?.snippet?.thumbnails?.default?.url,
-                name: VideoData?.snippet?.channelTitle,
-                subCount: channelData?.statistics?.subscriberCount,
-            }
-        })
+            allData.push({
+                videoId: VideoData.id,
+                videoTitle: VideoData.snippet.title,
+                videoDescription: VideoData.snippet.description,
+                videoLink: `https://www.youtube.com/watch?v=${VideoData.id}`,
+                videoThumbnail: VideoData.snippet.thumbnails?.standard?.url,
+                videoDuration: VideoData.contentDetails?.duration,
+                videoViews: VideoData.statistics?.viewCount,
+                videoLikes: VideoData.statistics?.likeCount,
+                videoAge: new Date(VideoData.snippet.publishedAt).toDateString(),
+                channelInfo: {
+                    id: VideoData.snippet.channelId,
+                    image: channelData?.snippet?.thumbnails?.default?.url,
+                    name: VideoData.snippet.channelTitle,
+                    subCount: channelData?.statistics?.subscriberCount,
+                }
+            });
+        }
     });
-    console.log(allData)
     return allData
 };

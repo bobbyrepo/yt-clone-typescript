@@ -1,66 +1,30 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React from 'react'
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineClose } from "react-icons/ai";
 import { CiSearch } from "react-icons/ci";
-import { TiMicrophone } from "react-icons/ti";
-import { BsYoutube, BsCameraVideo, BsBell } from "react-icons/bs";
+import { BsYoutube } from "react-icons/bs";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { IoAppsSharp } from "react-icons/io5";
-import Sidebar from './Sidebar';
-import axios from 'axios';
-import { BASE_URL } from '../utils/constants';
-import { HomeVideoType } from '../utils/Types'
-import { getAllSearchVideosData } from '../utils/getAllSearchVideosData';
+import { searchListType } from '../utils/Types';
 
-const API_KEY = import.meta.env.VITE_API_KEY;
-
-interface SearchListState {
-    videos: HomeVideoType[],
-    nextPageToken: null | string
-};
-
-interface NavbarProp {
-    searchlist: SearchListState
-    setSearchList: React.Dispatch<React.SetStateAction<SearchListState>>;
+interface NavbarProps {
+    search: string;
+    setSearch: (search: string) => void;
+    fetchSearch: (query: string) => void;
+    setSearchList: React.Dispatch<React.SetStateAction<searchListType>>;
 }
 
-
-function Navbar({ searchlist, setSearchList }: NavbarProp) {
-
-    const [error, setError] = useState<string | null>(null);
-    const [search, setSearch] = useState("")
-
-    const fetchSearch = async () => {
-        try {
-            const url = `${BASE_URL}/search?part=snippet&q=${search}&maxResults=20&key=${API_KEY}&${searchlist.nextPageToken != null ? `pageToken=${searchlist.nextPageToken}` : ''}`
-
-            const response = await axios.get(url);
-            if (response.data.error) {
-                setError('Videos not available for this filter.');
-                return;
-            }
-            setError("")
-
-            const mappedVideos = await getAllSearchVideosData(response.data.items);
-            setSearchList(prev => ({
-                videos: [...prev.videos, ...mappedVideos],
-                nextPageToken: response.data.nextPageToken,
-            }));
-        } catch (error) {
-            console.error(`Error fetching search videos:`, error);
-            setError('Error fetching videos. Please try again later.');
-        }
-    };
+function Navbar({ search, setSearch, fetchSearch, setSearchList }: NavbarProps) {
+    const navigate = useNavigate();
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             e.preventDefault()
-            setSearchList({ videos: [], nextPageToken: null })
-            if (search.length > 0) {
-                fetchSearch()
-                // console.log("search for", search)
+            if (search.trim()) {
+                setSearchList({ videos: [], nextPageToken: null });
+                navigate(`/search?query=${search}`);
+            } else {
+                navigate('/');
             }
-            // console.log("search for", search)
         }
     }
 

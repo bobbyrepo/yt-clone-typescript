@@ -29,3 +29,8 @@ export interface RecommendedVideoType {
         name: string;
     };
 }
+
+export interface searchListType {
+    videos: HomeVideoType[];
+    nextPageToken: null | string;
+}
