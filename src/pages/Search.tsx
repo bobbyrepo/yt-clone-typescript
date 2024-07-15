@@ -9,7 +9,6 @@ import { useSearchList } from '../Hooks/useSearchList';
 function Search({ setSearch }: { setSearch: (query: string) => void }) {
     const [searchParams] = useSearchParams();
     const searchQuery = searchParams.get('query');
-    console.log(searchQuery, "sssssssssssssss")
     const { searchList, fetchSearchData, setSearchList } = useSearchList();
 
     useEffect(() => {

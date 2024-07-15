@@ -7,6 +7,7 @@ import { getAllRecommendedVideosdata } from '../utils/getAllRecommendedVideosdat
 import { HomeVideoType, RecommendedVideoType } from '../utils/Types';
 import MiniCardComponent from '../components/MiniCardComponent';
 import WatchDetails from '../components/WatchDetails';
+import { fetchActivities } from '../utils/api';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -30,12 +31,9 @@ function Watch() {
 
     const getRecommendedVideos = async () => {
         try {
-            const {
-                data: { items },
-            } = await axios.get(
-                `${BASE_URL}/activities?key=${API_KEY}&channelId=${channelId}&part=snippet,contentDetails&maxResults=20`
-            );
-            const mappedVideos = await getAllRecommendedVideosdata(items, videoId);
+            const fetchRecommendedData = await fetchActivities(channelId)
+
+            const mappedVideos = await getAllRecommendedVideosdata(fetchRecommendedData, videoId);
             setRecommendedVideos(mappedVideos)
         } catch (error) {
             console.error(`Error fetching videos:`, error);

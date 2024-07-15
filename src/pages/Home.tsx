@@ -8,6 +8,7 @@ import { HomeVideoType } from '../utils/Types';
 import { getAllVideoData } from '../utils/getAllVideoData';
 import Sidebar from '../components/Sidebar';
 import { getAllSearchVideosData } from '../utils/getAllSearchVideosData';
+import { fetchVideos } from '../utils/api';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -36,24 +37,17 @@ function HomeVideos({ filter, categoryId }: HomeProps) {
 
     const [error, setError] = useState<string | null>(null);
 
-    const fetchVideos = async () => {
+    const fetchVideosData = async () => {
         try {
-            const url = `${BASE_URL}/videos?part=snippet&chart=mostPopular&maxResults=20&key=${API_KEY}&${categoryId != null ? `videoCategoryId=${categoryId}` : ''}&${filterVideos[filter].nextPageToken != null ? `pageToken=${filterVideos[filter].nextPageToken}` : ''}&${filter == "news" ? "regionCode=in" : ""}`
+            const videosdataResponse = await fetchVideos(categoryId, filter, filterVideos[filter].nextPageToken, setError)
 
-            const response = await axios.get(url);
-            if (response.data.error) {
-                setError('Videos not available for this filter.');
-                return;
-            }
-            setError("")
-            // console.log("Home Video", response.data.items[0]);
+            const mappedVideos = await getAllVideoData(videosdataResponse.items);
 
-            const mappedVideos = await getAllVideoData(response.data.items);
             setFilterVideos(prev => ({
                 ...prev,
                 [filter]: {
                     videos: [...prev[filter].videos, ...mappedVideos],
-                    nextPageToken: response.data.nextPageToken,
+                    nextPageToken: videosdataResponse.nextPageToken,
                 },
             }));
         } catch (error) {
@@ -63,7 +57,7 @@ function HomeVideos({ filter, categoryId }: HomeProps) {
     };
 
     useEffect(() => {
-        fetchVideos();
+        fetchVideosData();
     }, [filter]);
 
 
@@ -77,7 +71,7 @@ function HomeVideos({ filter, categoryId }: HomeProps) {
                 filterVideos[filter].videos.length ? (
                     <InfiniteScroll
                         dataLength={filterVideos[filter].videos.length}
-                        next={fetchVideos}
+                        next={fetchVideosData}
                         hasMore={filterVideos[filter].videos.length < 500}
                         loader={<Spinner />}
                         height={680}
