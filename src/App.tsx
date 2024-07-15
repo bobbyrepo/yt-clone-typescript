@@ -7,6 +7,7 @@ import Search from './pages/Search'
 import Watch from './pages/Watch'
 import Sidebar from './components/Sidebar'
 import { useSearchList } from './Hooks/useSearchList'
+import Channel from './pages/Channel'
 
 
 
@@ -41,6 +42,7 @@ function App() {
           />
           <Route path="/search" element={<Search setSearch={setSearch} />} />
           <Route path="/watch/:channelId/:videoId" element={<Watch />} />
+          <Route path="/Channel/:channelId" element={<Channel />} />
         </Routes>
       </BrowserRouter>
     </div>
