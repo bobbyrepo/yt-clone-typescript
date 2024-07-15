@@ -10,7 +10,7 @@ function Playlist({ playlists }: PlayListprops) {
 
     return (
         <div className="row row-cols-5 gap-y-8 cursor-pointer">
-            {playlists.length ? (
+            {playlists.length &&
                 playlists.map((playlist) => (
                     <div key={playlist.id} className='flex flex-col gap-2'>
                         <div className="relative rounded-xl overflow-hidden">
@@ -32,9 +32,7 @@ function Playlist({ playlists }: PlayListprops) {
                         <h3 className='font-semibold line-clamp-2'>{playlist.title}</h3>
                     </div>
                 ))
-            ) : (
-                <p>No playlists found</p>
-            )}
+            }
         </div>)
 }
 

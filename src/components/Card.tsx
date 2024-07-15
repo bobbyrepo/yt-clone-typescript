@@ -9,7 +9,6 @@ export default function Card({ data }: { data: HomeVideoType }) {
 
   return (
     <div className="col cursor-pointer hover:scale-[101%] duration-200 ease-in-out">
-      {/* <Link to={`/watch/${data.channelInfo.id}/${data.videoId}`} > */}
       <div className="flex gap-3 flex-col">
         <div className="relative overflow-hidden "
           onClick={() => navigate(`/watch/${data.channelInfo.id}/${data.videoId}`)}        >
@@ -46,7 +45,6 @@ export default function Card({ data }: { data: HomeVideoType }) {
           </div>
         </div>
       </div>
-      {/* </Link> */}
     </div>
   );
 }

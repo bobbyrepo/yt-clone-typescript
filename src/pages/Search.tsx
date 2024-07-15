@@ -9,16 +9,13 @@ import { useSearchList } from '../Hooks/useSearchList';
 function Search({ setSearch }: { setSearch: (query: string) => void }) {
     const [searchParams] = useSearchParams();
     const searchQuery = searchParams.get('query');
-    const { searchList, fetchSearch, setSearchList } = useSearchList();
-
-    // useEffect(() => {
-    //     console.log("SearchList", searchList)
-    // }, [searchList])
+    console.log(searchQuery, "sssssssssssssss")
+    const { searchList, fetchSearchData, setSearchList } = useSearchList();
 
     useEffect(() => {
         if (searchQuery) {
             setSearchList({ videos: [], nextPageToken: null });
-            fetchSearch(searchQuery);
+            fetchSearchData(searchQuery);
         }
         // Cleanup function to reset searchList on unmount
         return () => {
@@ -32,7 +29,7 @@ function Search({ setSearch }: { setSearch: (query: string) => void }) {
             {searchList.videos.length ? (
                 <InfiniteScroll
                     dataLength={searchList.videos.length}
-                    next={() => fetchSearch(searchQuery!)}
+                    next={() => fetchSearchData(searchQuery!)}
                     hasMore={searchList.videos.length < 500}
                     loader={<Spinner />}
                     height={680}
