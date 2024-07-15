@@ -1,38 +1,58 @@
 import React, { useEffect, useState } from 'react';
-import { ChannelInfoType } from '../utils/Types';
+import { ChannelInfoType, RecommendedVideoType } from '../utils/Types';
 import { PlaylistType } from '../utils/Types';
-import { fetchChannelInfo, fetchPlaylists } from '../utils/api';
+import { fetchChannelInfo, fetchChannelVideos, fetchPlaylists } from '../utils/api';
 import { parseChannelInfo, parsePlaylists } from '../utils/parseData';
+import { getAllRecommendedVideosdata } from '../utils/getAllRecommendedVideosdata';
 
-interface VideoListState {
+interface PlaylistState {
     videos: PlaylistType[],
+    nextPageToken: null | string
+};
+interface VideoListState {
+    videos: RecommendedVideoType[],
     nextPageToken: null | string
 };
 
 export const useChannel = () => {
 
     const [channelInfo, setChannelInfo] = useState<ChannelInfoType | null>(null);
-    const [playlistsData, setPlaylistsData] = useState<VideoListState>({ videos: [], nextPageToken: null });
+    const [playlists, setPlaylists] = useState<PlaylistState>({ videos: [], nextPageToken: null });
+    const [videosList, setVideosList] = useState<VideoListState>({ videos: [], nextPageToken: null })
     const [loading, setLoading] = useState(true);
     const [hasMore, setHasMore] = useState(false);
 
-    const fetchChannelData = async (channelId: string) => {
+    const fetchChannelData = async (channelId: string, category: string) => {
         try {
             const channelResponse = await fetchChannelInfo(channelId);
-            const playlistResponse = playlistsData.nextPageToken
-                ? await fetchPlaylists(channelId, playlistsData.nextPageToken)
-                : await fetchPlaylists(channelId);
-
-            const channelData = parseChannelInfo(channelResponse, playlistResponse.pageInfo.totalResults);
+            const channelData = parseChannelInfo(channelResponse);
             setChannelInfo(channelData);
 
-            const newPlaylists = parsePlaylists(playlistResponse.items);
-            setPlaylistsData((prevData) => ({
-                videos: [...prevData.videos, ...newPlaylists],
-                nextPageToken: playlistResponse.nextPageToken,
-            }));
+            if (category == "videos") {
+                const channelVideosResponse = await fetchChannelVideos(channelId);
 
-            setHasMore(Boolean(playlistResponse.nextPageToken));
+                const mappedVideos = await getAllRecommendedVideosdata(channelVideosResponse.items);
+                setVideosList(prev => ({
+                    videos: [...prev.videos, ...mappedVideos],
+                    nextPageToken: channelVideosResponse.nextPageToken,
+                }))
+                setHasMore(Boolean(channelVideosResponse.nextPageToken));
+            }
+
+            if (category == "playlists") {
+                const playlistResponse = playlists.nextPageToken
+                    ? await fetchPlaylists(channelId, playlists.nextPageToken)
+                    : await fetchPlaylists(channelId);
+
+
+                const newPlaylists = parsePlaylists(playlistResponse.items);
+                setPlaylists((prevData) => ({
+                    videos: [...prevData.videos, ...newPlaylists],
+                    nextPageToken: playlistResponse.nextPageToken,
+                }));
+                setHasMore(Boolean(playlistResponse.nextPageToken));
+            }
+
         } catch (error) {
             console.error('Error fetching channel data:', error);
         } finally {
@@ -41,6 +61,6 @@ export const useChannel = () => {
     };
 
 
-    return { channelInfo, playlistsData, fetchChannelData, loading, hasMore }
+    return { channelInfo, playlists, videosList, fetchChannelData, loading, hasMore }
 
 };

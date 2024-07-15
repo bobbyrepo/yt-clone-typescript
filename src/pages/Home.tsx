@@ -8,7 +8,7 @@ import { HomeVideoType } from '../utils/Types';
 import { getAllVideoData } from '../utils/getAllVideoData';
 import Sidebar from '../components/Sidebar';
 import { getAllSearchVideosData } from '../utils/getAllSearchVideosData';
-import { fetchVideos } from '../utils/api';
+import { fetchPopularVideos } from '../utils/api';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -37,17 +37,16 @@ function HomeVideos({ filter, categoryId }: HomeProps) {
 
     const [error, setError] = useState<string | null>(null);
 
-    const fetchVideosData = async () => {
+    const getPopularVideosList = async () => {
         try {
-            const videosdataResponse = await fetchVideos(categoryId, filter, filterVideos[filter].nextPageToken, setError)
+            const popularVideosResponse = await fetchPopularVideos(categoryId, filter, filterVideos[filter].nextPageToken, setError)
 
-            const mappedVideos = await getAllVideoData(videosdataResponse.items);
-
+            const mappedVideos = await getAllVideoData(popularVideosResponse.items);
             setFilterVideos(prev => ({
                 ...prev,
                 [filter]: {
                     videos: [...prev[filter].videos, ...mappedVideos],
-                    nextPageToken: videosdataResponse.nextPageToken,
+                    nextPageToken: popularVideosResponse.nextPageToken,
                 },
             }));
         } catch (error) {
@@ -57,7 +56,7 @@ function HomeVideos({ filter, categoryId }: HomeProps) {
     };
 
     useEffect(() => {
-        fetchVideosData();
+        getPopularVideosList();
     }, [filter]);
 
 
@@ -71,7 +70,7 @@ function HomeVideos({ filter, categoryId }: HomeProps) {
                 filterVideos[filter].videos.length ? (
                     <InfiniteScroll
                         dataLength={filterVideos[filter].videos.length}
-                        next={fetchVideosData}
+                        next={getPopularVideosList}
                         hasMore={filterVideos[filter].videos.length < 500}
                         loader={<Spinner />}
                         height={680}

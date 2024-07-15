@@ -1,6 +1,6 @@
 import { ChannelInfoType, PlaylistType } from './Types';
 
-export const parseChannelInfo = (channelData: any, playListsCount?: number): ChannelInfoType => {
+export const parseChannelInfo = (channelData: any): ChannelInfoType => {
     return {
         id: channelData.id,
         title: channelData.snippet.title,
@@ -13,7 +13,7 @@ export const parseChannelInfo = (channelData: any, playListsCount?: number): Cha
         },
         subscriberCount: channelData.statistics.subscriberCount,
         videoCount: channelData.statistics.videoCount,
-        playListsCount: playListsCount
+        // playListsCount: playListsCount
     };
 };
 
