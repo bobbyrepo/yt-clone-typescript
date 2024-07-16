@@ -57,7 +57,7 @@ function Playlist() {
                         <div className='row row-cols-4 gap-y-6'>
                             {
                                 playlistVideos?.videos?.map((item, ind) => (
-                                    <PlaylistVideoCard item={item} ind={ind} />
+                                    <PlaylistVideoCard key={ind} item={item} ind={ind} />
                                 ))
                             }
                         </div>

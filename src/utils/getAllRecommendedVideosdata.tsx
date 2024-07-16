@@ -18,6 +18,14 @@ export const getAllRecommendedVideosdata = async (videos: any[], videoId?: strin
         }
     );
 
+    videos.forEach(
+        (item: { contentDetails: { upload?: { videoId: string }, playlistItem?: { resourceId: { videoId: string } } } }) => {
+            if (item.contentDetails.upload) {
+                videoIds.push(item.contentDetails.upload.videoId);
+            } else if (item.contentDetails.playlistItem) {
+                videoIds.push(item.contentDetails.playlistItem.resourceId.videoId);
+            }
+        });
 
     // console.log(videoIds)
 

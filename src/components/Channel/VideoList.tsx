@@ -8,7 +8,7 @@ function VideoList({ videoList }: { videoList: RecommendedVideoType[] }) {
         <div className="row row-cols-4 gap-y-8 cursor-pointer">
             {videoList.length > 0 &&
                 videoList.map((videoData) => (
-                    <VideoListCard data={videoData} />
+                    <VideoListCard key={videoData.videoId} data={videoData} />
                 ))
             }
         </div>)
