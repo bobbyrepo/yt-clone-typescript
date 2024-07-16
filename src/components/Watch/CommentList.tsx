@@ -30,7 +30,7 @@ function CommentList({ videoId }: { videoId?: string }) {
     return (
         <div className='mt-3 flex flex-col gap-2'>
             <h1 className='px-8 text-2xl font-semibold'>Comments</h1>
-            <div className='flex flex-col gap-8'>
+            <div className='flex flex-col gap-2'>
                 {commentList?.comment?.length > 0 &&
                     commentList.comment.map(comment => (
                         <CommentCard key={comment.commentId} comment={comment} />
