@@ -61,3 +61,15 @@ export interface PlaylistType {
     };
     videosCount: number;
 }
+
+export interface PlaylistItemType {
+    id: string;
+    channelId: string
+    title: string;
+    description: string
+    thumbnails: {
+        default: { url: string };
+        medium: { url: string };
+        high: { url: string };
+    };
+}

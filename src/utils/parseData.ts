@@ -1,4 +1,4 @@
-import { ChannelInfoType, PlaylistType } from './Types';
+import { ChannelInfoType, PlaylistItemType, PlaylistType } from './Types';
 
 export const parseChannelInfo = (channelData: any): ChannelInfoType => {
     return {
@@ -18,7 +18,12 @@ export const parseChannelInfo = (channelData: any): ChannelInfoType => {
 };
 
 export const parsePlaylists = (playlistsData: any[]): PlaylistType[] => {
-    return playlistsData.map((playlist: any) => ({
+    return playlistsData.map((playlist: any) => parseSinglePlaylist(playlist));
+
+};
+
+export const parseSinglePlaylist = (playlist: any): PlaylistType => {
+    return {
         id: playlist.id,
         title: playlist.snippet.title,
         description: playlist.snippet.description,
@@ -27,6 +32,21 @@ export const parsePlaylists = (playlistsData: any[]): PlaylistType[] => {
             medium: { url: playlist.snippet.thumbnails.medium.url },
             high: { url: playlist.snippet.thumbnails.high.url },
         },
-        videosCount: playlist.contentDetails.itemCount, // Assuming itemCount represents number of videos
-    }));
+        videosCount: playlist.contentDetails.itemCount,
+    };
 };
+
+export const parsePlaylistitem = (playlistItems: any[]): PlaylistItemType[] => {
+    return playlistItems.map((playlistItem: any) => ({
+        id: playlistItem.contentDetails.videoId,
+        title: playlistItem.snippet.title,
+        description: playlistItem.snippet.description,
+        channelId: playlistItem.snippet.channelId,
+        thumbnails: {
+            default: { url: playlistItem.snippet.thumbnails.default.url },
+            medium: { url: playlistItem.snippet.thumbnails.medium.url },
+            high: { url: playlistItem.snippet.thumbnails.high.url },
+        },
+    }))
+};
+

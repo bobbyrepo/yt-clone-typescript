@@ -64,29 +64,25 @@ function Channel() {
                     </div>
                     <div className="my-3 flex flex-col">
                         <div className="flex">
-                            {/* {Boolean(videosList?.videos.length) && */}
                             <button
                                 onClick={() => setcategory("videos")}
                                 className={`w-44 text-xl py-2 font-semibold ${category == "videos" ? `border-b` : ""}  duration-100 ease-in-out`}
                             >
                                 Videos
                             </button>
-                            {/* } */}
-                            {/* {Boolean(playlists?.videos.length) && */}
                             <button
                                 onClick={() => setcategory("playlists")}
                                 className={`w-44 text-xl py-2 font-semibold ${category == "playlists" ? `border-b` : ""}  duration-100 ease-in-out`}
                             >
                                 Playlists
                             </button>
-                            {/* } */}
                         </div>
                         <hr className='h-1' />
                     </div>
                     {
                         category == "videos"
                             ? <VideoList videoList={videosList.videos} />
-                            : <Playlist playlists={playlists.videos} />
+                            : <Playlist playlists={playlists.videos} channelInfo={channelInfo} />
                     }
                 </div>
             </InfiniteScroll>

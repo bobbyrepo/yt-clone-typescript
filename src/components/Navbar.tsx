@@ -9,11 +9,11 @@ import { searchListType } from '../utils/Types';
 interface NavbarProps {
     search: string;
     setSearch: (search: string) => void;
-    fetchSearch: (query: string) => void;
+    fetchSearchData: (query: string) => void;
     setSearchList: React.Dispatch<React.SetStateAction<searchListType>>;
 }
 
-function Navbar({ search, setSearch, fetchSearch, setSearchList }: NavbarProps) {
+function Navbar({ search, setSearch, fetchSearchData, setSearchList }: NavbarProps) {
     const navigate = useNavigate();
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {

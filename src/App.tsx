@@ -8,6 +8,7 @@ import Watch from './pages/Watch'
 import Sidebar from './components/Sidebar'
 import { useSearchList } from './Hooks/useSearchList'
 import Channel from './pages/Channel'
+import Playlist from './pages/Playlist'
 
 
 
@@ -17,7 +18,7 @@ function App() {
 
   const [search, setSearch] = useState('');
 
-  const { searchList, fetchSearch, setSearchList } = useSearchList();
+  const { searchList, fetchSearchData, setSearchList } = useSearchList();
 
   return (
     <div className="">
@@ -31,7 +32,7 @@ function App() {
         <Navbar
           search={search}
           setSearch={setSearch}
-          fetchSearch={fetchSearch}
+          fetchSearchData={fetchSearchData}
           setSearchList={setSearchList} />
 
         <Routes>
@@ -43,6 +44,7 @@ function App() {
           <Route path="/search" element={<Search setSearch={setSearch} />} />
           <Route path="/watch/:channelId/:videoId" element={<Watch />} />
           <Route path="/Channel/:channelId" element={<Channel />} />
+          <Route path="/Playlist/:channelId/:playlistId" element={<Playlist />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -22,7 +22,7 @@ export const useChannel = () => {
     const [loading, setLoading] = useState(true);
     const [hasMore, setHasMore] = useState(false);
 
-    const fetchChannelData = async (channelId: string, category: string) => {
+    const fetchChannelData = async (channelId: string, category?: string) => {
         try {
             const channelResponse = await fetchChannelInfo(channelId);
             const channelData = parseChannelInfo(channelResponse);

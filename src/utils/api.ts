@@ -45,3 +45,15 @@ export const fetchPlaylists = async (channelId: string, pageToken?: string) => {
     const response = await axios.get(url);
     return response.data;
 };
+
+export const fetchSinglePlaylist = async (playlistId: string, pageToken?: string) => {
+    const url = `${BASE_URL}/playlists?key=${API_KEY}&id=${playlistId}&part=snippet,contentDetails&maxResults=15${pageToken ? `&pageToken=${pageToken}` : ''}`;
+    const response = await axios.get(url);
+    return response.data;
+};
+
+export const fetchPlaylistVideos = async (playlistId: string, pageToken?: string) => {
+    const url = `${BASE_URL}/playlistItems?key=${API_KEY}&playlistId=${playlistId}&part=snippet,contentDetails&maxResults=15${pageToken ? `&pageToken=${pageToken}` : ''}`;
+    const response = await axios.get(url);
+    return response.data;
+};
