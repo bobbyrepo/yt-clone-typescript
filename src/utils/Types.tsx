@@ -73,3 +73,22 @@ export interface PlaylistItemType {
         high: { url: string };
     };
 }
+
+export interface CommentType {
+    commentId: string
+    authorChannelId: string
+    authorName: string
+    authorProfile: string
+    commentText: string
+    commentLikeCount: number
+    commentRepliesCount: number
+}
+
+export interface ReplyType {
+    replyId: string
+    authorChannelId: string
+    authorName: string
+    authorProfile: string
+    replyText: string
+    replyLikeCount: string
+} 

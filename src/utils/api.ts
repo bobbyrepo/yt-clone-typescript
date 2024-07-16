@@ -57,3 +57,16 @@ export const fetchPlaylistVideos = async (playlistId: string, pageToken?: string
     const response = await axios.get(url);
     return response.data;
 };
+
+
+export const fetchVideoComments = async (videoId?: string, pageToken?: string) => {
+    const url = `${BASE_URL}/commentThreads?key=${API_KEY}&videoId=${videoId}&part=snippet&maxResults=25${pageToken ? `&pageToken=${pageToken}` : ''}`;
+    const response = await axios.get(url);
+    return response.data;
+};
+
+export const fetchCommentReplies = async (commentId?: string, pageToken?: string) => {
+    const url = `${BASE_URL}/comments?part=snippet&parentId=${commentId}&key=${API_KEY}`;
+    const response = await axios.get(url);
+    return response.data;
+};

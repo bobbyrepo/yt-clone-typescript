@@ -10,6 +10,7 @@ import MiniCardComponent from '../components/MiniCardComponent';
 import Spinner from '../components/Spinner';
 import WatchDetails from '../components/WatchDetails';
 import { fetchChannelVideos, fetchVideosData } from '../utils/api';
+import CommentList from '../components/Watch/CommentList';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -75,6 +76,7 @@ function Watch() {
                                 allowFullScreen
                             ></iframe>
                             <WatchDetails videoDetails={videoDetails} />
+                            <CommentList videoId={videoId} />
                         </div>
                         <div className="col-4 h-fit flex flex-col gap-3">
                             {recommendedVideos.videos.length > 0 &&

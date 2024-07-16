@@ -1,6 +1,5 @@
 import React from 'react'
 import { RecommendedVideoType } from '../../utils/Types'
-import MiniCardComponent from '../MiniCardComponent'
 import VideoListCard from './VideoListCard'
 
 function VideoList({ videoList }: { videoList: RecommendedVideoType[] }) {
