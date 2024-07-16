@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { HomeVideoType } from '../utils/Types'
 import { BiLike } from "react-icons/bi";
 import { FaShare } from "react-icons/fa";
@@ -9,10 +10,11 @@ function WatchDetails({ videoDetails }: { videoDetails?: HomeVideoType }) {
 
             <div className="flex items-center justify-between">
                 <div className="flex gap-3 items-center">
-                    <img src={videoDetails?.channelInfo?.image}
-                        className='w-12 h-fit aspect-[1/1] rounded-full'
-                        alt="channelImage" />
-
+                    <Link to={`/channel/${videoDetails?.channelInfo.id}`} >
+                        <img src={videoDetails?.channelInfo?.image}
+                            className='w-12 h-fit aspect-[1/1] rounded-full hover:scale-[108%] duration-100 ease-in-out'
+                            alt="channelImage" />
+                    </Link>
                     <div className="flex flex-col ">
                         <h2 className='text-lg font-semibold'>{videoDetails?.channelInfo?.name}</h2>
                         <h1 className='text-gray-400'>{videoDetails?.channelInfo?.subCount} subscribers</h1>

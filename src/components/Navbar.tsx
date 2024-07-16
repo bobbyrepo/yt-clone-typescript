@@ -16,17 +16,22 @@ interface NavbarProps {
 function Navbar({ search, setSearch, fetchSearchData, setSearchList }: NavbarProps) {
     const navigate = useNavigate();
 
-    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            e.preventDefault()
-            if (search.trim()) {
-                setSearchList({ videos: [], nextPageToken: null });
-                navigate(`/search?query=${search}`);
-            } else {
-                navigate('/');
-            }
+    const searchFunction = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (search.trim()) {
+            setSearchList({ videos: [], nextPageToken: null });
+            navigate(`/search?query=${search}`);
+        } else {
+            navigate('/');
         }
     }
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            searchFunction(e as any)
+        }
+    };
 
     return (
         <div className="w-full bg-[#0c0c0c] opacity-[98%] sticky top-0 z-50">
@@ -43,7 +48,7 @@ function Navbar({ search, setSearch, fetchSearchData, setSearchList }: NavbarPro
                     </Link>
                 </div>
                 <div className="flex items-center justify-center gap-5">
-                    <form>
+                    <form onSubmit={searchFunction}>
                         <div className="flex items-center h-10 border-[0.6px] border-neutral-700 rounded-full overflow-hidden">
                             <div className="flex gap-4 items-center pr-5">
                                 <input
