@@ -13,9 +13,9 @@ const isCommentType = (data: CommentType | ReplyType): data is CommentType => {
 
 function CommentBody({ data }: CommentBodyProps) {
     return (
-        <div className="flex gap-3">
+        <div className="flex sm:gap-3 gap-2">
             <img src={data.authorProfile}
-                className={`h-fit rounded-full ${isCommentType(data) ? `w-10 ` : `w-8 `}`}
+                className={`h-fit rounded-full ${isCommentType(data) ? `sm:w-10 w-9 ` : `sm:w-8 w-7`}`}
                 alt="channelImg"
             />
             <div className="">

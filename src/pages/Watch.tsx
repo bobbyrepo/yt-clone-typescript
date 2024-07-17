@@ -41,7 +41,8 @@ function Watch() {
             const mappedVideos = await getAllRecommendedVideosdata(RecommendedData.items, videoId);
             setRecommendedVideos((prevData) => ({
                 videos: [...prevData.videos, ...mappedVideos],
-                nextPageToken: RecommendedData.nextPageToken,
+                nextPageToken: null,
+                // nextPageToken: RecommendedData.nextPageToken,
             }));
         } catch (error) {
             console.error(`Error fetching videos:`, error);
@@ -56,37 +57,41 @@ function Watch() {
 
     return (
         <div>
-            <InfiniteScroll
+            {/* <InfiniteScroll
                 dataLength={recommendedVideos.videos.length}
                 next={getRecommendedVideos}
                 hasMore={true}
                 loader={<Spinner />}
                 height={740}
                 endMessage={<p>No more playlists found</p>}
-            >
-                <div className=' w-[95%] mx-auto mt-6 mb-12'>
-                    <div className="row">
-                        <div className="col-8">
-                            <iframe
-                                className='w-full aspect-[16/9] rounded'
-                                src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
-                                title="YouTube video player"
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                            ></iframe>
-                            <WatchDetails videoDetails={videoDetails} />
+            > */}
+            <div className=' sm:w-[95%] w-[98%] mx-auto md:mt-6 mt-2 mb-12'>
+                <div className="row">
+                    <div className="col-xl-8 col-lg-7">
+                        <iframe
+                            className='w-full aspect-[16/9] rounded'
+                            src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+                            title="YouTube video player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                        ></iframe>
+                        <WatchDetails videoDetails={videoDetails} />
+                        <div className="lg:block hidden">
                             <CommentList videoId={videoId} />
-                        </div>
-                        <div className="col-4 h-fit flex flex-col gap-3">
-                            {recommendedVideos.videos.length > 0 &&
-                                recommendedVideos.videos.map((item: RecommendedVideoType) => (
-                                    <MiniCardComponent data={item} key={item.videoId} />
-                                ))}
-                        </div>
+                        </div>                        </div>
+                    <div className="col-xl-4 col-lg-5 h-fit flex flex-col gap-3 lg:mt-0 mt-3">
+                        {recommendedVideos.videos.length > 0 &&
+                            recommendedVideos.videos.map((item: RecommendedVideoType) => (
+                                <MiniCardComponent data={item} key={item.videoId} />
+                            ))}
+                    </div>
+                    <div className="lg:hidden block">
+                        <CommentList videoId={videoId} />
                     </div>
                 </div>
-            </InfiniteScroll>
+            </div>
+            {/* </InfiniteScroll> */}
         </div>
     )
 }
