@@ -16,7 +16,9 @@ function WatchDetails({ videoDetails }: { videoDetails?: HomeVideoType }) {
                             alt="channelImage" />
                     </Link>
                     <div className="flex flex-col ">
-                        <h2 className='text-lg font-semibold'>{videoDetails?.channelInfo?.name}</h2>
+                        <Link to={`/channel/${videoDetails?.channelInfo.id}`} >
+                            <h2 className='text-lg font-semibold'>{videoDetails?.channelInfo?.name}</h2>
+                        </Link>
                         <h1 className='text-gray-400'>{videoDetails?.channelInfo?.subCount} subscribers</h1>
                     </div>
                 </div>

@@ -71,7 +71,7 @@ function Navbar({ search, setSearch, fetchSearchData, setSearchList }: NavbarPro
                     </form>
 
                 </div>
-                <div className="">
+                <div className="hidden lg:block">
                     {/* empty */}
                 </div>
             </div>

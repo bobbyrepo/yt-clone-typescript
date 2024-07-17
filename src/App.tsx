@@ -35,7 +35,7 @@ function App() {
           fetchSearchData={fetchSearchData}
           setSearchList={setSearchList} />
 
-        <Routes>
+        {/* <Routes>
           <Route path="/" element={
             <Home
               filter={filter}
@@ -45,7 +45,7 @@ function App() {
           <Route path="/watch/:channelId/:videoId" element={<Watch />} />
           <Route path="/Channel/:channelId" element={<Channel />} />
           <Route path="/Playlist/:channelId/:playlistId" element={<Playlist />} />
-        </Routes>
+        </Routes> */}
       </BrowserRouter>
     </div>
   )
