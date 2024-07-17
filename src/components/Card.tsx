@@ -14,10 +14,10 @@ export default function Card({ data }: { data: HomeVideoType }) {
           onClick={() => navigate(`/watch/${data.channelInfo.id}/${data.videoId}`)}        >
           <img
             src={data.videoThumbnail}
-            className="aspect-[16/9]  object-cover rounded-xl"
+            className="aspect-[16/9] object-cover rounded-xl"
             alt="thumbnail"
           />
-          <span className="absolute bottom-3 right-3 text-sm bg-[#0c0c0cd0] px-2 py-0.5 z-10 rounded">
+          <span className="absolute sm:bottom-3 bottom-2 sm:right-3 right-2 text-sm bg-[#0c0c0cd0] px-2 py-0.5 z-10 rounded">
             {data.videoDuration}
           </span>
         </div>
@@ -27,12 +27,12 @@ export default function Card({ data }: { data: HomeVideoType }) {
             src={data.channelInfo.image}
             alt="channel"
             onClick={() => navigate(`/channel/${data.channelInfo.id}`)}
-            className="h-10 object-cover aspect-[1/1] rounded-full  hover:scale-[108%] duration-100 ease-in-out"
+            className="md:h-10 h-8 object-cover aspect-[1/1] rounded-full  hover:scale-[108%] duration-100 ease-in-out"
           />
           <div className="flex flex-col gap-1"
             onClick={() => navigate(`/watch/${data.channelInfo.id}/${data.videoId}`)} >
-            <h3 className="text-lg line-clamp-2">{data.videoTitle}</h3>
-            <div className="text-md text-gray-400">
+            <h3 className="sm:text-lg line-clamp-2">{data.videoTitle}</h3>
+            <div className="sm:text-md text-sm text-gray-400">
               <h4>
                 {data.channelInfo.name}
               </h4>

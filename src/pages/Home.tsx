@@ -75,7 +75,7 @@ function HomeVideos({ filter, categoryId }: HomeProps) {
                         loader={<Spinner />}
                         height={680}
                     >
-                        <div className="row row-cols-3 w-[95%] mx-auto mt-6">
+                        <div className="row row-cols-md-3 row-cols-sm-2 row-cols-1 sm:w-[95%] mx-auto mt-6">
                             {filterVideos[filter].videos.length > 0 &&
                                 filterVideos[filter].videos.map((item: HomeVideoType) => (
                                     <Card data={item} key={item.videoId} />
