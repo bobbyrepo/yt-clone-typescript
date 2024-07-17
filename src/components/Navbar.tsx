@@ -35,25 +35,25 @@ function Navbar({ search, setSearch, fetchSearchData, setSearchList }: NavbarPro
 
     return (
         <div className="w-full bg-[#0c0c0c] opacity-[98%] sticky top-0 z-50">
-            <div className="flex justify-between items-center w-[95%] mx-auto h-14 ">
-                <div className="flex gap-8 items-center text-2xl">
+            <div className="flex md:gap-0 gap-2  justify-between items-center w-[95%] mx-auto h-14 ">
+                <div className="flex sm:gap-8 gap-3 items-center text-2xl">
                     <a className="" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-                        <RxHamburgerMenu className='text-xl' />
+                        <RxHamburgerMenu className='sm:text-xl text-lg' />
                     </a>
                     <Link to="/">
-                        <div className="flex gap-1 justify-center">
-                            <BsYoutube className="text-3xl text-red-600" />
-                            <span className="text-xl">YouTube</span>
+                        <div className="flex gap-1 items-center justify-center">
+                            <BsYoutube className="sm:text-3xl text-2xl text-red-600" />
+                            <span className="sm:text-xl text-lg">YouTube</span>
                         </div>
                     </Link>
                 </div>
                 <div className="flex items-center justify-center gap-5">
                     <form onSubmit={searchFunction}>
-                        <div className="flex items-center h-10 border-[0.6px] border-neutral-700 rounded-full overflow-hidden">
-                            <div className="flex gap-4 items-center pr-5">
+                        <div className="flex items-center sm:h-10 h-9 border-[0.6px] border-neutral-700 rounded-full overflow-hidden">
+                            <div className="flex md:gap-4 items-center md:pr-5 pr-2">
                                 <input
                                     type="text"
-                                    className="w-96 px-3 text-lg text-zinc-400 bg-[#0c0c0c] focus:outline-none placeholder:text-neutral-500 "
+                                    className="md:w-96 w-[100%] sm:px-3 px-2 sm:text-lg text-md text-zinc-400 bg-[#0c0c0c] focus:outline-none placeholder:text-neutral-500 "
                                     placeholder='Search'
                                     value={search}
                                     onChange={(e) => { setSearch(e.target.value) }}
@@ -61,11 +61,11 @@ function Navbar({ search, setSearch, fetchSearchData, setSearchList }: NavbarPro
                                 />
 
                                 <AiOutlineClose
-                                    className={`text-xl cursor-pointer text-neutral-400 ${!search ? "invisible" : "visible"}`}
+                                    className={`sm:text-lg text-md cursor-pointer text-neutral-400 ${!search ? "invisible" : "visible"}`}
                                     onClick={() => { setSearch('') }} />
                             </div>
                             <button className="h-10 w-16 flex items-center justify-center bg-neutral-900 border-l-[1px] border-neutral-700 ">
-                                <CiSearch className="text-2xl text-neutral-200" />
+                                <CiSearch className="sm:text-2xl text-xl text-neutral-200" />
                             </button>
                         </div>
                     </form>
