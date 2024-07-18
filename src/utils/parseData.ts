@@ -32,7 +32,7 @@ export const parseSinglePlaylist = (playlist: any): PlaylistType => {
             medium: { url: playlist.snippet.thumbnails.medium.url },
             high: { url: playlist.snippet.thumbnails.high.url },
         },
-        videosCount: playlist.contentDetails.itemCount,
+        videosCount: playlist.contentDetails.itemCount
     };
 };
 

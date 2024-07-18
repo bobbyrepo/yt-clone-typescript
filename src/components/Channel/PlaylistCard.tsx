@@ -19,7 +19,7 @@ function PlaylistCard({ playlist, channelInfo }: PlayListCardprops) {
                         alt={playlist.title}
                         className=' aspect-[16/9] object-cover'
                     />
-                    <div className="absolute bottom-3 right-3 ">
+                    <div className="absolute sm:bottom-3 bottom-1 sm:right-3 right-1">
                         <div className="flex items-center gap-2 text-sm bg-[#0c0c0cd0] px-2 py-0.5 rounded">
                             <FaListUl />
                             <div className="">{playlist.videosCount} videos</div>

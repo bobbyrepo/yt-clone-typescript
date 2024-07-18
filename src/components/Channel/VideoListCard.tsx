@@ -8,7 +8,7 @@ function VideoListCard({ data }: { data: RecommendedVideoType }) {
             to={`/watch/${data.channelInfo.id}/${data.videoId}`}
             className="col cursor-pointer"
         >
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col sm:gap-3 gap-1">
                 <div className="relative  hover:scale-[101%] duration-200 ease-in-out">
                     <span className="absolute bottom-1 right-1 text-sm bg-[#0c0c0cd0] px-2 py-0.5 z-10 rounded">
                         {data.videoDuration}
@@ -20,13 +20,12 @@ function VideoListCard({ data }: { data: RecommendedVideoType }) {
                     />
                 </div>
                 <div className="flex gap-1 flex-col">
-                    <h4 className="text-md line-clamp-1">{data.videoTitle}</h4>
+                    <h4 className="sm:text-md text-sm line-clamp-1">{data.videoTitle}</h4>
                     <div className="text-sm text-gray-400">
                         {/* <div>{data.channelInfo.name} </div> */}
-                        <div className="flex gap-1">
-                            <span>{data.videoViews} views</span>
-                            <span>•</span>
-                            <span>{data.videoAge}</span>
+                        <div className="md:flex gap-3">
+                            <p>{data.videoViews} views</p>
+                            <p>{data.videoAge}</p>
                         </div>
                     </div>
                 </div>
